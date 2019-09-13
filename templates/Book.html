@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- <html xmlns="http://www.w3.org/1999/xhtml"> -->
+<head>
+	
+	<meta http-equiv="Content-t sype" content="text/html; charset=utf-8" />
+	<title>BookOnHand.com</title>
+	<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" type="text/css" media="all" />
+
+	
+	<meta name="keywwords" content="Shop Around - Great free html template for on-line shop. Use it as a start point for your on line business. The template can be easily implemented in many open source E-commerce platforms" />
+	<meta name="description" content="Shop Around - Great free html template for on-line shop. Use it as a start point for your on line business. The template can be easily implemented in many open source E-commerce platforms" />
+	
+	<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>	
+	
+</head>
+<body>
+	
+	
+	
+<!-- Shell -->	
+<div class="shell">
+	
+	<!-- Header -->	
+	<div id="header">
+	    <h1 id="logo"><a href="#">shoparound</a></h1>
+		<!-- Cart -->
+		<div id="cart">
+			<div id="divBottom"></div>
+			<!-- <p><a class="cart-link">Contect us</a></p> -->
+			<p><span>E-mail: <strong>xinyangz@usc.edu</strong></span></p>
+		</div>
+		<!-- End Cart -->
+		
+		<!-- Navigation -->
+		<div id="navigation">
+			<ul>
+			    <!-- <li><a href="index.html" >Home</a></li> -->
+				<li><a href="Book.html" class = 'active'>Books</a></li>
+	
+			</ul>
+		</div>
+		<!-- End Navigation -->
+	</div>
+	<!-- Main -->
+	<div id="main">
+		<div class="cl">&nbsp;</div>
+		
+		<!-- Content -->
+		<div id="content">
+			
+			<!-- Content Slider -->
+			<div id="slider" class="box">
+				<h2>The Results as Shown: (The number of the results is: <p class = "counter"></p>)</h2>
+
+				<pre id = "metadata"></pre>
+				<!-- <h4><ul id = "list" class="resultlist"></h4>	 -->
+				<table class = "resultlist"></table>
+				<!-- <table class = "resultlist_pdf"></table> -->
+				
+
+		    </div>
+			<!-- End Content Slider -->
+			
+	
+			
+		</div>
+		<!-- End Content -->
+
+		<!-- Sidebar -->
+		<div id="sidebar">
+			
+			<!-- Search -->
+			<div class="box search">
+				<h2>Search by <span></span></h2>
+				<div class="box-content">
+				  <form action="" method="post">
+						
+						<div class = "inline-field" >
+						    <label>Keyword</label>
+							<input id = 'txt1' type="text" class="field small-field" />
+					 
+					    <button type="button" class = "buttonsearch"  style = "width:80px;height:40px" >Search</button>
+					  
+					</form>
+				</div>
+			</div>
+			<!-- End Search -->
+			
+			<!-- Categories -->
+			<div class="box">
+				<h2>Categories <span></span></h2>
+				<div class="box-content">
+					<!-- <input type="checkbox"> -->
+					<label class = "check">Category</label>
+					<table class = "resultkey1"></table>
+				</div>
+				<div class="box-content">
+					<!-- <input type="checkbox"> -->
+					<label class = "check"> Creation_Year</label>
+					<table class = "resultkey2"></table>
+				</div>
+				<div class="box-content">
+					<!-- <input type="checkbox"> -->
+					<label class = "check"> Author </label>
+					<table class = "resultkey3"></table>
+				</div>
+				<button type="button" class = "" onclick="btnClick()"  style = "width:80px;height:40px" >Search</button>
+			</div>
+			<!-- End Categories -->
+			
+		</div>
+		<!-- End Sidebar -->
+		
+		<div class="cl">&nbsp;</div>
+	</div>
+	<!-- End Main -->
+	
+	<!-- Footer -->
+	<div id="footer">
+		<p class="left" alt="" width="220" height="408">
+			<a href="index.html">Home</a>
+			<span>|</span>
+			<a href="Book.html">Books</a>
+		</p>
+		<p class="right">
+			&copy; 2018 BooksOnHand.
+		</p>
+	</div>
+	<!-- End Footer -->
+	
+</div>	
+<!-- End Shell -->
+	
+</body>
+<script>
+	$(function(){
+	 ksresult_get();
+		
+	});
+
+	
+	function ksresult_get(){
+		var input_blank = $('#txt1').val();
+		$.post({
+			url:"/get_metadata",
+			data:{"keyword":input_blank},
+			dataType:"json",
+			success:function(metadata){
+				var resultlist = metadata.result
+				var counter_num = metadata.resultcounter
+				$('.rlt-item').remove()
+				
+
+				for(i in resultlist){
+					var title = resultlist[i].Title
+					var author = resultlist[i].Author
+					var creation_Year = resultlist[i].Creation_Year
+					var edition = resultlist[i].Edition
+					var ISBN = resultlist[i].ISBN
+					var Page_Number = resultlist[i].Page_Number
+					var cat = resultlist[i].category
+					var urll = resultlist[i].url
+
+					var item = $("<li class='rlt-item'></li>")
+					var item1 = $("<a href='"+urll+"'>"+'Title:'+title+"</a>")
+					var item2 = $("<div>"+'Author:'+author+"</div>")
+					var item3 = $("<div>"+'Creation Year:'+creation_Year+"</div>")
+					var item4 = $("<div>"+'Edition:'+edition+"</div>")
+					var item5 = $("<div>"+'ISBN:'+ISBN+"</div>")
+					var item6 = $("<div>"+'Page Number:'+Page_Number+"</div>")
+					var item7 = $("<div>"+'Category:'+cat+"</div>")
+
+
+					item.append(item1)
+					item.append(item2)
+					item.append(item3)
+					item.append(item4)
+					item.append(item5)
+					item.append(item6)
+					item.append(item7)
+					
+					$('.resultlist').append(item)
+					console.log('.resultlist')
+				}
+				$('.counter').text(counter_num)
+
+				
+				// checkbox的生成基于list_pdf
+				$('.rlt-key').remove()
+				var author_sum_list = metadata.author_sum_list
+				for (i in author_sum_list){
+					var author = author_sum_list[i][0]
+					var cnt = author_sum_list[i][1]
+
+					var item_author = $("<li class='rlt-key'></li>")
+				    var item1 = $("<div><input type = 'checkbox' class='check_value'>"+'  <p>'+author+'</p> '+'('+cnt+')'+"</div>")
+				    // var item1 = $("<type = "checkbox">"+author+' '+cnt+"</div>")
+
+					item_author.append(item1)
+					$('.resultkey3').append(item_author)
+				}
+
+				var year_sum_list = metadata.year_sum_list
+				for (i in year_sum_list){
+					var year = year_sum_list[i][0]
+					var cnt1 = year_sum_list[i][1]
+
+					var item_year = $("<li class='rlt-key'></li>")
+				    var item2 = $("<div><input type = 'checkbox' class='check_value'>"+'  <p>'+year+'</p> '+'('+cnt1+')'+"</div>")
+					item_year.append(item2)
+					$('.resultkey2').append(item_year)
+
+				}
+				var cat_sum_list = metadata.cat_sum_list
+				for (i in cat_sum_list){
+					var cat = cat_sum_list[i][0]
+					var cnt2 = cat_sum_list[i][1]
+
+					var item_cat = $("<li class='rlt-key'></li>")
+				    var item3 = $("<div><input type = 'checkbox' class='check_value'>"+'  <p>'+cat+'</p> '+'('+cnt2+')'+"</div>")
+					item_cat.append(item3)
+					$('.resultkey1').append(item_cat)
+					console.log('.resultkey1')
+
+				}
+				
+				
+				
+			}
+		});
+	}
+    function btnClick(){
+		var input_blank = $('#txt1').val();
+		var cdata = new Array();
+		var ydata = new Array();
+		var adata = new Array();
+		$('.check_value').each(function(i,e){
+			var isChecked = $(this).prop('checked');
+			if (isChecked == true){
+				var sibtext = $(this).parents('.rlt-key').children().children('p').text()
+				var name = $(this).parents('.box-content').children('.check').text().trim().toLowerCase()
+				if(name=="category"){
+					cdata.push(sibtext)
+				}
+				if(name=="creation_year"){
+					ydata.push(sibtext)
+				}
+				if(name=='author'){
+					adata.push(sibtext)
+				}
+			}
+		});
+		$.post({
+			
+			url:"/get_metadata",
+			data:{"cdata":JSON.stringify(cdata),"ydata":JSON.stringify(ydata),"adata":JSON.stringify(adata),"keyword":input_blank},
+			dataType:"json",
+			success:function(metadata){
+				var resultlist = metadata.result_pdf
+				var counter_num = metadata.resultcounter
+				$('.rlt-item').remove()
+				
+				for(i in resultlist){
+					var title = resultlist[i].Title
+					var author = resultlist[i].Author
+					var creation_Year = resultlist[i].Creation_Year
+					var edition = resultlist[i].Edition
+					var ISBN = resultlist[i].ISBN
+					var Page_Number = resultlist[i].Page_Number
+					var cat = resultlist[i].category
+					var urll = resultlist[i].url
+
+					var item = $("<li class='rlt-item'></li>")
+					var item1 = $("<a href='"+urll+"'>"+'Title:'+title+"</a>")
+					var item2 = $("<div>"+'Author:'+author+"</div>")
+					var item3 = $("<div>"+'Creation Year:'+creation_Year+"</div>")
+					var item4 = $("<div>"+'Edition:'+edition+"</div>")
+					var item5 = $("<div>"+'ISBN:'+ISBN+"</div>")
+					var item6 = $("<div>"+'Page Number:'+Page_Number+"</div>")
+					var item7 = $("<div>"+'Category:'+cat+"</div>")
+
+					item.append(item1)
+					item.append(item2)
+					item.append(item3)
+					item.append(item4)
+					item.append(item5)
+					item.append(item6)
+					item.append(item7)
+					
+					$('.resultlist').append(item)
+				}
+				$('.counter').text(counter_num)
+
+				// console.log($('.resultlist'))
+
+				// checkbox的生成基于list_pdf
+				$('.rlt-key').remove()
+				var author_sum_list = metadata.new_author_sum_list
+				for (i in author_sum_list){
+					var author = author_sum_list[i][0]
+					var cnt = author_sum_list[i][1]
+
+					var item_author = $("<li class='rlt-key'></li>")
+				    var item1 = $("<div><input type = 'checkbox' class='check_value'>"+'  <p>'+author+'</p> '+'('+cnt+')'+"</div>")
+				    // var item1 = $("<type = "checkbox">"+author+' '+cnt+"</div>")
+
+					item_author.append(item1)
+					$('.resultkey3').append(item_author)
+				}
+
+				var year_sum_list = metadata.new_year_sum_list
+				for (i in year_sum_list){
+					var year = year_sum_list[i][0]
+					var cnt1 = year_sum_list[i][1]
+
+					var item_year = $("<li class='rlt-key'></li>")
+				    var item2 = $("<div><input type = 'checkbox' class='check_value'>"+'  <p>'+year+'</p> '+'('+cnt1+')'+"</div>")
+					item_year.append(item2)
+					$('.resultkey2').append(item_year)
+
+				}
+				var cat_sum_list = metadata.new_cat_sum_list
+				for (i in cat_sum_list){
+					var cat = cat_sum_list[i][0]
+					var cnt2 = cat_sum_list[i][1]
+
+					var item_cat = $("<li class='rlt-key'></li>")
+				    var item3 = $("<div><input type = 'checkbox' class='check_value'>"+'  <p>'+cat+'</p> '+'('+cnt2+')'+"</div>")
+					item_cat.append(item3)
+					$('.resultkey1').append(item_cat)
+					console.log('.resultkey1')
+
+				}
+			
+			}
+
+		})
+		
+		
+	}
+	$('.buttonsearch').click(function(){
+		ksresult_get();
+	});
+
+	function date()
+	{
+	var date=new Date();
+	var year=date.getFullYear();
+	var month=date.getMonth()+1;
+	var day=date.getDate();
+	var hour="00"+date.getHours();
+		hour=hour.substr(hour.length-2);
+	var minute="00"+date.getMinutes();
+		minute=minute.substr(minute.length-2);
+	var second="00"+date.getSeconds();
+		second=second.substr(second.length-2);
+	var week=date.getDay();
+	switch(week)
+	{
+		case 1:week="Monday ";break;
+		case 2:week="Tuesday ";break;
+		case 3:week="Wednesday";break;
+		case 4:week="Thursday ";break;
+		case 5:week="Friday ";break;
+		case 6:week="Saturday ";break;
+		case 0:week="Sunday ";break;
+		default:week="";break;
+	}
+	 document.getElementById("divBottom").innerHTML=year+"."+month+"."+day+"."+" "+hour+":"+minute+":"+second+" "+week;
+
+	}
+	setInterval("date()",1000);
+
+  </script>
+</html>
